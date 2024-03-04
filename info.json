@@ -1,0 +1,12 @@
+{
+  "commit": {
+    "commit": "346a65519b2e7fb56653ad208bbfdadbdca2e625",
+    "author": "Rex Parsons <47549264+RWParsons@users.noreply.github.com>",
+    "time": "2023-06-08 04:21:23",
+    "files": 2,
+    "merge": false,
+    "message": "add downloads badge to README\n"
+  },
+  "repo": "https://github.com/ropensci/predictNMB",
+  "pkg": "predictNMB"
+}
