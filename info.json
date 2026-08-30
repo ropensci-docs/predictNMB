@@ -1,0 +1,13 @@
+{
+  "commit": {
+    "commit": "8fd168237e445229f5c59033cb4de108eb3ea1d1",
+    "author": "Rex Parsons <47549264+RWParsons@users.noreply.github.com>",
+    "time": "2024-07-21T23:34:10Z",
+    "files": 17,
+    "merge": false,
+    "message": "update roxygen version and snaps\n"
+  },
+  "repo": "https://github.com/ropensci/predictNMB",
+  "pkg": "predictNMB",
+  "time": "2026-08-30T07:32:08Z"
+}

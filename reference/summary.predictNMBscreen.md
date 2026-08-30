@@ -1,0 +1,106 @@
+# Create table summaries of `predictNMBscreen` objects.
+
+Create table summaries of `predictNMBscreen` objects.
+
+## Usage
+
+``` r
+# S3 method for class 'predictNMBscreen'
+summary(
+  object,
+  what = c("nmb", "inb", "cutpoints"),
+  inb_ref_col = NULL,
+  agg_functions = list(median = function(x) {
+     round(stats::median(x), digits = 2)
+
+    }, `95% CI` = function(x) {
+     paste0(round(stats::quantile(x, probs = c(0.025,
+    0.975)), digits = 1), collapse = " to ")
+ }),
+  rename_vector,
+  show_full_inputs = FALSE,
+  ...
+)
+```
+
+## Arguments
+
+- object:
+
+  A `predictNMBscreen` object.
+
+- what:
+
+  What to summarise: one of "nmb", "inb" or "cutpoints". Defaults to
+  "nmb".
+
+- inb_ref_col:
+
+  Which cutpoint method to use as the reference strategy when
+  calculating the incremental net monetary benefit. See `do_nmb_sim` for
+  more information.
+
+- agg_functions:
+
+  A named list of functions to use to aggregate the selected values.
+  Defaults to the median and 95% interval.
+
+- rename_vector:
+
+  A named vector for renaming the methods in the summary. The values of
+  the vector are the default names and the names given are the desired
+  names in the output.
+
+- show_full_inputs:
+
+  A logical. Whether or not to include the inputs used for simulation
+  alongside aggregations.
+
+- ...:
+
+  Additional, ignored arguments.
+
+## Value
+
+Returns a `tibble`.
+
+## Details
+
+Table summaries will be based on the `what` argument. Using "nmb"
+returns the simulated values for NMB, with no reference group; "inb"
+returns the difference between simulated values for NMB and a set
+strategy defined by `inb_ref_col`; "cutpoints" returns the cutpoints
+selected (0, 1).
+
+## Examples
+
+``` r
+
+# perform screen with increasing values of model discimination (sim_auc)
+# \donttest{
+get_nmb <- function() c("TP" = -3, "TN" = 0, "FP" = -1, "FN" = -4)
+sim_screen_obj <- screen_simulation_inputs(
+  n_sims = 50, n_valid = 10000, sim_auc = seq(0.7, 0.9, 0.1),
+  event_rate = 0.1, fx_nmb_training = get_nmb, fx_nmb_evaluation = get_nmb,
+  cutpoint_methods = c("all", "none", "youden", "value_optimising")
+)
+summary(
+  sim_screen_obj,
+  rename_vector = c(
+    "Value_Optimising" = "value_optimising",
+    "Treat_None" = "none",
+    "Treat_All" = "all",
+    "Youden_Index" = "youden"
+  )
+)
+#> # A tibble: 3 × 9
+#>   sim_auc Treat_All_median `Treat_All_95% CI` Treat_None_median
+#>     <dbl>            <dbl> <chr>                          <dbl>
+#> 1     0.7             -1.2 -1.2 to -1.2                    -0.4
+#> 2     0.8             -1.2 -1.2 to -1.2                    -0.4
+#> 3     0.9             -1.2 -1.2 to -1.2                    -0.4
+#> # ℹ 5 more variables: `Treat_None_95% CI` <chr>, Youden_Index_median <dbl>,
+#> #   `Youden_Index_95% CI` <chr>, Value_Optimising_median <dbl>,
+#> #   `Value_Optimising_95% CI` <chr>
+# }
+```
